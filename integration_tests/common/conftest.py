@@ -1,11 +1,4 @@
 import pytest
-import os
-
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.service import Service as FirefoxService
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from integration_tests.common import config
 from integration_tests.common.driver_manager import DriverManager
@@ -19,7 +12,7 @@ def pytest_addoption(parser):
     """
     parser.addoption("--baseurl",
                      action = "store",
-                     default = "https://www.hudl.com",
+                     default = config.default_base_url,
                      help = "Base URL for the application under test")
     parser.addoption("--browser",
                       action = "store",
@@ -32,9 +25,14 @@ def pytest_addoption(parser):
                     help = "The name of the host to run tests in"
                     )
     parser.addoption("--headless",
-                      action = "store",
+                      action = True,
                       default = False,
-                      help = "Switch to run headlws or not"
+                      help = "Switch to run headless or not"
+                      )
+    parser.addoption("--start-maximized",
+                      action = True,
+                      default = False,
+                      help = "Switch to maximized or not"
                       )
     parser.addoption("--scope",
                       action = "store",
@@ -64,8 +62,9 @@ def driver(request):
     # Store command line parameter values in config.py
     config.baseurl = request.config.getoption("--baseurl")
     config.browser = request.config.getoption("--browser").lower()
-    config.host = request.config.getoption("--host")
+    config.host = request.config.getoption("--host").lower()
     config.headless = request.config.getoption("--headless")
+    config.headless = request.config.getoption("--start-maximized")
     
     # Get a shared drive instance
     driver_ = DriverManager.get_driver()

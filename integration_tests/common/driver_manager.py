@@ -1,6 +1,7 @@
-import os
-
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options as ChromeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service as FirefoxService
@@ -44,11 +45,19 @@ class DriverManager():
         #Otherwise instantiate the driver, save it in the static variable and return it.
         else:
             if config.browser == "chrome":
-                driver_ = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+                chrome_options = ChromeOptions()
+                if config.headless == True: chrome_options.add_argument("--headless=new")
+                if config.startMaximized == True: chrome_options.add_argument("--start-maximized")
+                driver_ = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
             elif config.browser == "firefox":
-                driver_ = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()))
+                firefox_options = FirefoxOptions()
+                if config.headless == True: firefox_options.add_argument("--headless")
+                driver_ = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=firefox_options)
             elif config.browser == "edge":
-                driver_ = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
+                edge_options = EdgeOptions()
+                if config.headless == True: edge_options.add_argument("--headless=new")
+                if config.startMaximized == True: edge_options.add_argument("--start-maximized")
+                driver_ = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=edge_options)
             DriverManager._driver = driver_
             return DriverManager._driver
         
