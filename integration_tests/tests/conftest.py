@@ -1,6 +1,6 @@
 import pytest
 
-from integration_tests.common import config
+from . import config
 from integration_tests.common.driver_manager import DriverManager
 
 def pytest_addoption(parser):
@@ -25,13 +25,13 @@ def pytest_addoption(parser):
                     help = "The name of the host to run tests in"
                     )
     parser.addoption("--headless",
-                      action = True,
-                      default = False,
-                      help = "Switch to run headless or not"
-                      )
+                    action = "store",
+                    default = "true",
+                    help = "Switch to run headless or not"
+                    )
     parser.addoption("--start-maximized",
-                      action = True,
-                      default = False,
+                      action = "store",
+                      default = "true",
                       help = "Switch to maximized or not"
                       )
     parser.addoption("--scope",
@@ -40,11 +40,11 @@ def pytest_addoption(parser):
                       help = "Scope for which the driver exists"
                       )
 
-def get_scope(config):
+def get_scope(fixture_name, config):
     config.scope = config.getoption("--scope")
     return config.scope
 
-@pytest.fixture(scope=get_scope)
+@pytest.fixture
 def driver(request):
     """
     Setup fixture that runs before and after each test that invokes it as an argument.
@@ -64,10 +64,20 @@ def driver(request):
     config.browser = request.config.getoption("--browser").lower()
     config.host = request.config.getoption("--host").lower()
     config.headless = request.config.getoption("--headless")
-    config.headless = request.config.getoption("--start-maximized")
+    config.start_maximized = request.config.getoption("--start-maximized")
     
     # Get a shared drive instance
     driver_ = DriverManager.get_driver()
+
+    def quit():
+        """
+        Cleans up the driver.
+        """
+        DriverManager.quit_session()
+    # Schedule the clean up function to run after the test
+    request.addfinalizer(quit)
+    # Passes the driver to any test that invokes it as an argument
+    return driver_
 
 
     

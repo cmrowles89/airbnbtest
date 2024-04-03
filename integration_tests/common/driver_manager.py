@@ -17,7 +17,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from integration_tests import config
+from ..tests import config
 
 class DriverManager():
     
@@ -46,17 +46,17 @@ class DriverManager():
         else:
             if config.browser == "chrome":
                 chrome_options = ChromeOptions()
-                if config.headless == True: chrome_options.add_argument("--headless=new")
-                if config.startMaximized == True: chrome_options.add_argument("--start-maximized")
+                if config.headless == "true": chrome_options.add_argument("--headless=new")
+                if config.start_maximized == "true": chrome_options.add_argument("--start-maximized")
                 driver_ = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
             elif config.browser == "firefox":
                 firefox_options = FirefoxOptions()
-                if config.headless == True: firefox_options.add_argument("--headless")
+                if config.headless == "true": firefox_options.add_argument("--headless")
                 driver_ = webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=firefox_options)
             elif config.browser == "edge":
                 edge_options = EdgeOptions()
-                if config.headless == True: edge_options.add_argument("--headless=new")
-                if config.startMaximized == True: edge_options.add_argument("--start-maximized")
+                if config.headless == "true": edge_options.add_argument("--headless=new")
+                if config.start_maximized == "true": edge_options.add_argument("--start-maximized")
                 driver_ = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()), options=edge_options)
             DriverManager._driver = driver_
             return DriverManager._driver
