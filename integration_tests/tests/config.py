@@ -16,7 +16,13 @@ host = ""
 # Wehther to use headless mode or not for testing.
 # Set in conftest.py based on command line paramete '--headless'
 # Command line parameter is defined in conftest.py and defaults to False
-headless = None
+headless = ""
+
+# Wehther or not to start up maximized.
+# Set in conftest.py based on command line paramete '--start-maximized'
+# Command line parameter is defined in conftest.py and defaults to False
+start_maximized = ""
+
 
 #Scope  for testing.
 # Set in conftest.py based on command line paramete '--scope'

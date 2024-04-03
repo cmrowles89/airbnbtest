@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from integration_tests.common import config
+from ..tests import config
 
 class BasePage():
     """
@@ -31,14 +31,24 @@ class BasePage():
         # Define a common locator to be used by wait_for_page_to_load(). It is overwritten by the individual Pages as required.
         self._page_loaded_indicator = (By.ID, "") # Must be filled in if not overwritten by individual pages
     
-    def load(self):
+    def _load(self, url):
         """
         Opens the page specified by _url. When invoked on a specific page (e.g. Login page) it opens that page.
         
         """
-        self.driver.get(self._url)
+        if self._url == "" : self._url = url
+        if self._url.startswith("http"):
+            self.driver.get(self._url)
+        else:
+            self.driver.get(config.baseurl + self._url)
+
+    def _find(self, locator):
+        return self.driver.find_element(locator['by'], locator['value'])
     
-    def wait_for_page_to_load(self, timeout):
+    def _click(self, locator):
+        self._find(locator).click()
+    
+    def _wait_for_page_to_load(self, timeout):
         """
         Uses a reliable locator for each page with the Expected Condition to determine when the page has loaded.
         When invoked on a specific page (e.g. Login page) it waits for that page to load.
@@ -46,7 +56,7 @@ class BasePage():
         """
         WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(self._page_loaded_indicator))
     
-    def is_current_page(self):
+    def _is_current_page(self):
         """
         Checks whether or not the Page on which it is invoked is actually the current page.
         Used to verify if the current page is the expected page.
@@ -69,17 +79,17 @@ class BasePage():
         """
         if timeout > 0:
             try:
-                WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+                WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located((locator['by'], locator['value'])))
             except TimeoutException:
                 return False
             return True
         else:
             try:
-                return self.driver.find_element(*locator)
+                return self.driver.find_element(locator['by'], locator['value'])
             except NoSuchElementException:
                 return False
     
-    def refresh(self):
+    def _refresh(self):
         """
         Refreshes the page and waits for it to reload.
         """
