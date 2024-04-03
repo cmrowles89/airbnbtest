@@ -39,6 +39,11 @@ def pytest_addoption(parser):
                       default = "session",
                       help = "Scope for which the driver exists"
                       )
+    parser.addoption("--platform",
+                    action = "store",
+                    default = "Windows 11",
+                    help = "Platform to run tests on remote"
+                    )
 
 def get_scope(fixture_name, config):
     config.scope = config.getoption("--scope")
