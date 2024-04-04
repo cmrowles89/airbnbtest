@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from . base_page import BasePage
+from integration_tests.pages.base_page import BasePage
 
 
 class DynamicLoadingPage(BasePage):

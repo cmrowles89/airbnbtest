@@ -47,6 +47,9 @@ class BasePage():
     
     def _click(self, locator):
         self._find(locator).click()
+        
+    def _type(self, locator, input_text):
+        self._find(locator).send_keys(input_text)
     
     def _wait_for_page_to_load(self, timeout):
         """
