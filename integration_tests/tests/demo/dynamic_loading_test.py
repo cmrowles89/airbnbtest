@@ -1,7 +1,8 @@
 import pytest
-from integration_tests.pages.dynamic_loading_page import DynamicLoadingPage
+from integration_tests.pages.demo.dynamic_loading_page import DynamicLoadingPage
 
 
+@pytest.mark.deep
 class TestDynamicLoading():
 
     @pytest.fixture
