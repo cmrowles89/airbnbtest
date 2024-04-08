@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 from integration_tests.pages.base_page import BasePage
-from ...tests.demo import config
+from ...tests import config
 
 
 class LoginPage(BasePage):
