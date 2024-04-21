@@ -169,3 +169,9 @@ integration_tests/user_creds.py
 integration_tests/vendor/*
 integration_tests/resources/drivers/
 integration_tests/common/user_creds.py
+assets/
+allure-report/
+report.htm
+result.xml
+integration_tests/report.html
+integration_tests/result.xml
