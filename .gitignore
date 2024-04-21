@@ -171,7 +171,7 @@ integration_tests/resources/drivers/
 integration_tests/common/user_creds.py
 assets/
 allure-report/
-report.htm
-result.xml
-integration_tests/report.html
-integration_tests/result.xml
+report.*
+result.*
+integration_tests/report.*
+integration_tests/result.*
