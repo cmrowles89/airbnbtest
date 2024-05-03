@@ -12,7 +12,7 @@ class BasePage():
     Base Page for generic pages
     
     """
-    
+        
     def __init__(self, driver):
         """
         Initializes Base page.
@@ -21,13 +21,13 @@ class BasePage():
         # Driver passed in to Page from instantiating test
         self.driver = driver
         
-        # Gets the base URL from 'conf.py' Base URL is set by a command line option defined in conftest.py. It defaults to 'hudl.com'. 
-        # The value is stored in conf.py in conftest.py.  
-        self._baseurl = config.baseurl
-        
         # Defines generic URL to be used in methods common to all Pages. It is overwritten by the individual Pages as required.
-        self._url = ""
+        self.url_ = ""
         
+        # Define a common base URL. It is overwritten by the individual Pages as required.
+
+        # self.baseurl_ = ""
+                
         # Define a common locator to be used by wait_for_page_to_load(). It is overwritten by the individual Pages as required.
         self._page_loaded_indicator = (By.ID, "") # Must be filled in if not overwritten by individual pages
     
@@ -36,11 +36,9 @@ class BasePage():
         Opens the page specified by _url. When invoked on a specific page (e.g. Login page) it opens that page.
         
         """
-        if self._url == "" : self._url = url
-        if self._url.startswith("http"):
-            self.driver.get(self._url)
-        else:
-            self.driver.get(config.baseurl + self._url)
+        self.url_ = url
+        print("\n***** self.url_:  " + self.url_ + " *****\n")
+        self.driver.get(self.url_)
 
     def _find(self, locator):
         return self.driver.find_element(locator['by'], locator['value'])
