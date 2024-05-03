@@ -12,7 +12,7 @@ def pytest_addoption(parser):
     """
     parser.addoption("--baseurl",
                      action = "store",
-                     default = config.default_base_url,
+                     default = "",
                      help = "Base URL for the application under test")
     parser.addoption("--browser",
                       action = "store",
