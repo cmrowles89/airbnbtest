@@ -33,6 +33,3 @@ scope = ""
 # Set in conftest.py based on command line paramete '--platform'
 # Command line parameter is defined in conftest.py and defaults to "Windows 11"
 platform = ""
-
-#
-default_base_url = "http://the-internet.herokuapp.com"
